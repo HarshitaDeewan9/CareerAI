@@ -1,5 +1,5 @@
 // API service for communicating with the backend
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://genai-backend-458973355291.us-central1.run.app/';
 
 class ApiService {
   constructor() {

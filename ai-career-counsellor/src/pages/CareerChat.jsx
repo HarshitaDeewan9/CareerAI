@@ -47,7 +47,7 @@ const CareerChat = () => {
       }]);
 
       // Call FastAPI backend
-      const response = await fetch('http://localhost:8000/chat', {
+      const response = await fetch('https://genai-backend-458973355291.us-central1.run.app/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const CareerChat = () => {
 
   const clearChat = async () => {
     try {
-      await fetch('http://localhost:8000/chat/history', { method: 'DELETE' });
+      await fetch('https://genai-backend-458973355291.us-central1.run.app/chat/history', { method: 'DELETE' });
       setMessages([{
         user: '',
         bot: "Chat history cleared! How can I help you with your career today?",

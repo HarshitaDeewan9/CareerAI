@@ -22,7 +22,7 @@ const JobDetailsCard = ({ jobTitle, matchScore }) => {
       
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:8000/api/job-details', {
+        const response = await fetch('https://genai-backend-458973355291.us-central1.run.app/api/job-details', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

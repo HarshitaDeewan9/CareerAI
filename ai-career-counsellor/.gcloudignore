@@ -1,0 +1,11 @@
+# Ignore unnecessary files for Cloud Build
+node_modules/
+venv/
+__pycache__/
+.git/
+.env
+*.log
+dist/
+build/
+.cache/
+.DS_Store

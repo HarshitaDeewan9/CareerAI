@@ -1,10 +1,9 @@
+import vertexai
 import json
 import re
 from typing import List, Optional, Dict , Any
 import os
 from pydantic import BaseModel, Field
-from langchain.prompts import PromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -13,12 +12,14 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 import google.generativeai as genai
+from langchain_google_vertexai import ChatVertexAI
+
+vertexai.init(project="careerai-476016", location="us-central1")
 
 # Configuration
 GEMINI_API_KEY = "AIzaSyBmknnBd4p_6nt81OMHcKnlj4SqPeUg0pk"
-gemini_model  = ChatGoogleGenerativeAI(
+gemini_model  = ChatVertexAI(
                 model="gemini-2.5-flash",
-                api_key=GEMINI_API_KEY,
                 temperature=0.7,
                 max_retries=2
             )
@@ -27,9 +28,8 @@ gemini_model  = ChatGoogleGenerativeAI(
 if GEMINI_API_KEY and GEMINI_API_KEY != "your_gemini_api_key_here":
     try:
         genai.configure(api_key=GEMINI_API_KEY)
-        gemini_model  = ChatGoogleGenerativeAI(
+        gemini_model  = ChatVertexAI(
                 model="gemini-2.5-flash",
-                api_key=GEMINI_API_KEY,
                 temperature=0.7,
                 max_retries=2
             )
@@ -398,12 +398,10 @@ Please provide detailed professional career advice covering:
         """
         try:
             # Initialize the LLM with proper error handling and timeout
-            llm = ChatGoogleGenerativeAI(
+            llm = ChatVertexAI(
                 model="gemini-2.5-flash",
-                api_key=GEMINI_API_KEY,
                 temperature=0.7,
                 max_tokens=5000,
-                timeout=30,
                 max_retries=2
             )
 
@@ -549,15 +547,11 @@ Please provide detailed professional career advice covering:
             if not self.api_key:
                 return "I'm a career guidance chatbot! I'm here to help with career advice, job search tips, skill development, and professional growth. However, I need a Gemini API key to provide personalized responses. For now, I can suggest exploring career resources online!"
 
-            from langchain_google_genai import ChatGoogleGenerativeAI
-
             # Create the model
-            llm = ChatGoogleGenerativeAI(
+            llm = ChatVertexAI(
                 model="gemini-2.5-flash",
-                api_key=self.api_key,
                 temperature=0.7,
                 max_tokens=5000,
-                timeout=30,
                 max_retries=2
             )
 
@@ -828,12 +822,10 @@ def analyze_skill_gap(current_skills: str, target_skills: str) -> Dict[str, Any]
         target_skills = target_skills.replace("\\", "\\\\").replace("\n", "\\n")
 
         # Create a fresh model instance with proper configuration
-        llm = ChatGoogleGenerativeAI(
+        llm = ChatVertexAI(
             model="gemini-2.5-flash",
-            api_key=GEMINI_API_KEY,
             temperature=0.7,
             max_tokens=2000,
-            timeout=30,
             max_retries=2
         )
 
@@ -866,6 +858,7 @@ Guidelines:
 - Consider the person's existing experience level
 
 Respond ONLY with valid, **complete**, and **strictly valid JSON**.
+Include maximum 5 brief points in learning path.
 Do not include any commentary, explanation, or markdown formatting.
 If you are unsure, still produce syntactically valid JSON.
 """
@@ -1038,11 +1031,13 @@ app = FastAPI(
 # Enable CORS for frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:5174"],  # React dev servers
+    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:5174", "https://careerai-476016.web.app", "https://careerai-476016.firebaseapp.com"],  # React dev servers
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+PORT = int(os.environ.get("PORT", 8080))
 
 # FastAPI Endpoints
 @app.get("/")
@@ -1281,4 +1276,4 @@ async def skill_chat(request: SkillChatRequest):
 if __name__ == "__main__":
     # For testing locally
     print("Starting AI Career Counsellor API server...")
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=PORT)
