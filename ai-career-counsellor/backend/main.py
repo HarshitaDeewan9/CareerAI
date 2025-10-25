@@ -6,6 +6,7 @@ import os
 from pydantic import BaseModel, Field
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import uvicorn
 import joblib
 import pandas as pd
@@ -1037,6 +1038,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 PORT = int(os.environ.get("PORT", 8080))
 
 # FastAPI Endpoints
