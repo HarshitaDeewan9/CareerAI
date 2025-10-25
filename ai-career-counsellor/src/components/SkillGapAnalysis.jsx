@@ -19,7 +19,7 @@ const SkillGapAnalysis = () => {
     setError('');
 
     try {
-      const response = await fetch('https://genai-backend-458973355291.us-central1.run.app/api/analyze-skills', {
+      const response = await fetch('/api/analyze-skills', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
