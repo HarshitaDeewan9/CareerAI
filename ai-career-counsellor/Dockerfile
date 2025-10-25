@@ -19,7 +19,7 @@ COPY backend/ ./backend
 # Copy frontend build
 COPY --from=frontend /app/dist ./backend/static
 
-ENV PORT 8080
+ENV PORT=8080
 EXPOSE 8080
 
 # Start backend
