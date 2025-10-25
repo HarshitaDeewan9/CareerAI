@@ -10,19 +10,19 @@ RUN npm run build
 
 # Stage 2: Build backend container
 FROM python:3.13-slim
-WORKDIR /app
+WORKDIR /app/backend          # Changed to backend folder
 
 COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY backend/ ./backend
+COPY backend/ .              # Copy contents into WORKDIR
 
 # Copy frontend build
-COPY --from=frontend /app/dist ./backend/static
+COPY --from=frontend /app/dist ./static
 
-RUN touch backend/__init__.py
+RUN touch __init__.py         # optional if you want to keep package-style imports
 
-ENV PORT=8080
+ENV PORT=8080                 # fixed ENV syntax
 EXPOSE 8080
 
 # Start backend
-CMD ["sh", "-c", "uvicorn backend.main:app --host 0.0.0.0 --port ${PORT}"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT}"]  # updated to main:app
