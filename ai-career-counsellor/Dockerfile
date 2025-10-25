@@ -19,6 +19,8 @@ COPY backend/ ./backend
 # Copy frontend build
 COPY --from=frontend /app/dist ./backend/static
 
+RUN touch backend/__init__.py
+
 ENV PORT=8080
 EXPOSE 8080
 
