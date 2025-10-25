@@ -1039,7 +1039,6 @@ app.add_middleware(
 )
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
-PORT = int(os.environ.get("PORT", 8080))
 
 # FastAPI Endpoints
 @app.get("/")
@@ -1278,4 +1277,5 @@ async def skill_chat(request: SkillChatRequest):
 if __name__ == "__main__":
     # For testing locally
     print("Starting AI Career Counsellor API server...")
+    PORT = int(os.environ.get("PORT", 8080))
     uvicorn.run("main:app", host="0.0.0.0", port=PORT)
