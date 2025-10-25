@@ -1032,7 +1032,7 @@ app = FastAPI(
 # Enable CORS for frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:5174", "https://careerai-476016.web.app", "https://careerai-476016.firebaseapp.com"],  # React dev servers
+    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:5174", "https://careerai-476016.web.app", "https://careerai-476016.firebaseapp.com", "https://careerai-app-458973355291.us-central1.run.app"],  # CORS Links
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
