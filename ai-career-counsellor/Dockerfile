@@ -21,8 +21,8 @@ COPY --from=frontend /app/dist ./static
 
 RUN touch __init__.py         # optional if you want to keep package-style imports
 
-ENV PORT=8080                 # fixed ENV syntax
+ENV PORT=8080
 EXPOSE 8080
 
 # Start backend
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT}"]  # updated to main:app
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
