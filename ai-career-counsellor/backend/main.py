@@ -1046,10 +1046,14 @@ async def root():
     """Root endpoint for API health check"""
     return {"message": "AI Career Counsellor API is running", "status": "healthy"}
 
+# @app.get("/health")
+# async def health_check_endpoint():
+#     """Health check endpoint"""
+#     return health_check()
+
 @app.get("/health")
-async def health_check_endpoint():
-    """Health check endpoint"""
-    return health_check()
+def health_check():
+    return {"status": "ok"}
 
 @app.post("/api/student/career-advice", response_model=CareerAdvisoryResponse)
 async def get_student_career_advice_endpoint(request: CareerAdvisoryRequest):
